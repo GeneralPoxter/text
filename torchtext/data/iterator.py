@@ -179,7 +179,7 @@ class Iterator(object):
                 yield Batch(minibatch, self.dataset, self.device,
                             self.train)
             if not self.repeat:
-                raise StopIteration
+                return
 
     def state_dict(self):
         return {
@@ -248,8 +248,7 @@ class BPTTIterator(Iterator):
                     text=data[i:i + seq_len],
                     target=data[i + 1:i + 1 + seq_len])
             if not self.repeat:
-                raise StopIteration
-
+                return
 
 class BucketIterator(Iterator):
     """Defines an iterator that batches examples of similar lengths together.
