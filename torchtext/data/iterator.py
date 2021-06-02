@@ -179,7 +179,7 @@ class Iterator(object):
                 yield Batch(minibatch, self.dataset, self.device,
                             self.train)
             if not self.repeat:
-                raise StopIteration
+                return
 
     def state_dict(self):
         return {
@@ -248,8 +248,7 @@ class BPTTIterator(Iterator):
                     text=data[i:i + seq_len],
                     target=data[i + 1:i + 1 + seq_len])
             if not self.repeat:
-                raise StopIteration
-
+                return
 
 class BucketIterator(Iterator):
     """Defines an iterator that batches examples of similar lengths together.
@@ -301,3 +300,4 @@ def pool(data, batch_size, key, batch_size_fn=lambda new, count, sofar: count,
         p_batch = batch(sorted(p, key=key), batch_size, batch_size_fn)
         for b in random_shuffler(list(p_batch)):
             yield b
+            
